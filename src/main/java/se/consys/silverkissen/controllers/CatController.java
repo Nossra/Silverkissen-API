@@ -44,7 +44,7 @@ public class CatController {
 			System.out.println("No litters found.");
 			return Response.status(204).build();
 		}		
-	}
+	} 
 	
 	@GET
 	@Path("/parents")
@@ -118,15 +118,22 @@ public class CatController {
 		try {
 			Cat cat = dao.findById(id);
 			
-			if (born != null && !born.getLocalDate().equals(LocalDate.MIN)) cat.setBorn(born.getLocalDate());
+			if (born != null && !born.getLocalDate().equals(LocalDate.MIN)) {
+				if (cat.isParent()) {
+					cat.setAge(Period.between(cat.getBorn(), LocalDate.now()).getYears());	
+				} else {
+					cat.setBorn(born.getLocalDate());
+				}
+			}
 			if (!notes.equals("")) cat.setNotes(notes);
-			if (age != -1) cat.setAge(age);
+			if (age != -1) {
+				if (cat.isParent() != true) {
+					cat.setAge(age);
+				}
+			}
 			if (!breed.equals("")) cat.setBreed(breed);
 			if (!color.equals("")) cat.setColor(color);
-			if (!name.equals("")) {
-				System.out.println("Setting name...");
-				cat.setName(name);
-			}
+			if (!name.equals("")) cat.setName(name);
 			if (!sex.equals("")) cat.setSex(sex);
 			
 			if (chipped != -1) {
