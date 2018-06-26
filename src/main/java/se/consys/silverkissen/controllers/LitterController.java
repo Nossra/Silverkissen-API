@@ -27,6 +27,7 @@ import se.consys.silverkissen.dataaccess.litters.iLitterDao;
 import se.consys.silverkissen.entities.Cat;
 import se.consys.silverkissen.entities.Image;
 import se.consys.silverkissen.entities.Litter;
+import se.consys.silverkissen.entities.LitterStatus;
 import se.consys.silverkissen.entities.Log;
 import se.consys.silverkissen.helpers.ListHelper;
 import se.consys.silverkissen.helpers.LocalDateHelper;
@@ -68,12 +69,16 @@ public class LitterController {
 	
 	@POST
 	public Response create(Litter litter) {
-		for (Cat c : litter.getParents()) {
-			System.out.println(c.getName());
-		}
 		List<Cat> kittens = new ArrayList<Cat>();
 	    for (int i = 0; i < litter.getNumberOfKittens(); i++) {
 			Cat kitten = new Cat();
+			kitten.setBorn(litter.getBorn());
+			kitten.setAge(Period.between(litter.getBorn(), LocalDate.now()).getYears());
+			if (litter.getParents().get(0).getBreed().equals(litter.getParents().get(1).getBreed().trim())) {
+				kitten.setBreed(litter.getParents().get(0).getBreed());
+			} else {
+				kitten.setBreed("Bondkatt");
+			}			
 			kittens.add(kitten);
 		}
 	    litter.setKittens(kittens);
@@ -88,11 +93,6 @@ public class LitterController {
 				catDao.create(c);
 			}
 		}
-//		if (litter.getParents() != null) {
-//			for (Cat c : litter.getParents()) {
-//				catDao.create(c);
-//			}
-//		}
 		dao.create(litter);
 
 		return Response.ok().build();
@@ -113,11 +113,20 @@ public class LitterController {
 			@DefaultValue("-1") @QueryParam("chipped") int chipped,
 			@DefaultValue("-1") @QueryParam("vaccinated") int vaccinated,
 			@DefaultValue("-1") @QueryParam("pedigree") int pedigree,
-			@DefaultValue("") @QueryParam("displayimage") String displayPicture) {
+			@DefaultValue("") @QueryParam("displayimage") String displayPicture,
+			@DefaultValue("") @QueryParam("litterstatus") String status) {
 		try {
 			Litter litter = dao.findById(id);
+			if (!status.equals("")) {
+				litter.setStatus(status);
+			}
 			if (!notes.equals("")) litter.setNotes(notes);
-			if (born != null && !born.getLocalDate().equals(LocalDate.MIN)) litter.setBorn(born.getLocalDate());
+			if (born != null && !born.getLocalDate().equals(LocalDate.MIN)) {
+				litter.setBorn(born.getLocalDate());
+				for (Cat kitten : litter.getKittens()) {
+					kitten.setAge(Period.between(litter.getBorn(), LocalDate.now()).getYears());
+				}
+			}
 			if (readyAt != null && !readyAt.getLocalDate().equals(LocalDate.MIN)) litter.setReadyAt(readyAt.getLocalDate());
 			if (numberOfMales != -1) litter.setNumberOfMales(numberOfMales);
 			if (numberOfFemales != -1) litter.setNumberOfFemales(numberOfFemales);
@@ -126,22 +135,40 @@ public class LitterController {
 			if (chipped != -1) {
 				if (chipped == 0) {
 					litter.setChipped(false);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setChipped(false);
+					}
 				} else {
 					litter.setChipped(true);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setChipped(true);
+					}
 				}
 			}
 			if (vaccinated != -1) {
 				if (vaccinated == 0) {
 					litter.setVaccinated(false);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setVaccinated(false);
+					}
 				} else {
 					litter.setVaccinated(true);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setVaccinated(true);
+					}
 				}
 			}
 			if (pedigree != -1) {
 				if (pedigree == 0) {
 					litter.setPedigree(false);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setPedigree(false);
+					}
 				} else {
 					litter.setPedigree(true);
+					for (Cat kitten : litter.getKittens()) {
+						kitten.setPedigree(true);
+					}
 				}
 			}
 			
@@ -177,19 +204,20 @@ public class LitterController {
 				}
 			}
 			
-			if (!imageIds.equals(""))
-			try {
-				List<Integer> imagelist = ListHelper.separateIds(imageIds);
-				List<Image> images = new ArrayList<Image>();
-				for (Integer imageId : imagelist) {
-					Image i = imageDao.findById(imageId);
-					images.add(i);
+			if (!imageIds.equals("")) {
+				try {
+					List<Integer> imagelist = ListHelper.separateIds(imageIds);
+					List<Image> images = new ArrayList<Image>();
+					for (Integer imageId : imagelist) {
+						Image i = imageDao.findById(imageId);
+						images.add(i);
+					}
+					litter.setImageUrls(images);
+				} catch (NoResultException e) {
+					Log log = new Log(Log.Messages.NORESULT, "Image", "Image ids: " + imageIds);
+					dao.saveLog(log);
+					return Response.status(204).build();
 				}
-				litter.setImageUrls(images);
-			} catch (NoResultException e) {
-				Log log = new Log(Log.Messages.NORESULT, "Image", "Image ids: " + imageIds);
-				dao.saveLog(log);
-				return Response.status(204).build();
 			}
 			
 			dao.update(litter);

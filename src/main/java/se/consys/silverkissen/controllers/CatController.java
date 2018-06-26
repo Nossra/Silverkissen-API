@@ -117,7 +117,6 @@ public class CatController {
 		System.out.println("patch called. " + name);
 		try {
 			Cat cat = dao.findById(id);
-			
 			if (born != null && !born.getLocalDate().equals(LocalDate.MIN)) {
 				if (cat.isParent()) {
 					cat.setAge(Period.between(cat.getBorn(), LocalDate.now()).getYears());	

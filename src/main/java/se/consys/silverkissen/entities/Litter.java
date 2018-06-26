@@ -42,6 +42,7 @@ public class Litter {
 	private boolean vaccinated;
 	private boolean pedigree;
 	private boolean chipped;
+	private String status;
 	
 	public Litter() {
 		
@@ -159,4 +160,12 @@ public class Litter {
 	public void setImageUrls(List<Image> imageUrls) {
 		this.imageUrls = imageUrls;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}	
 }
