@@ -246,4 +246,25 @@ public class LitterController {
 //		}
 		return Response.status(200).build();
 	}
+	
+	@GET
+	@Path("/archived")
+	public Response findArchivedLitters() {
+		List<Litter> litters = dao.findArchivedLitters();
+		return Response.status(200).entity(litters).build();
+	}
+	
+	@GET
+	@Path("/active")
+	public Response findActiveLitters() {
+		List<Litter> litters = dao.findActiveLitters();
+		return Response.status(200).entity(litters).build();
+	}
+	
+	@GET
+	@Path("/earlier")
+	public Response findEarlierLitters() {
+		List<Litter> litters = dao.findEarlierLitters();
+		return Response.status(200).entity(litters).build();	
+	}
 }

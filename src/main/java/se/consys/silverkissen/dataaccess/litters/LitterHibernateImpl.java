@@ -62,6 +62,36 @@ public class LitterHibernateImpl implements iLitterDao {
 		session.getTransaction().commit();
 	}
 
+	@Override
+	public List<Litter> findActiveLitters() {
+		String HQL = "From Litter WHERE status = 'Aktiv'";
+		
+		@SuppressWarnings("unchecked")
+		List<Litter> result = (List<Litter>) session.createQuery(HQL)
+				.getResultList();
+		return  result;
+	}
+
+	@Override
+	public List<Litter> findEarlierLitters() {
+		String HQL = "From Litter WHERE status = 'Tidigare kull'";
+		
+		@SuppressWarnings("unchecked")
+		List<Litter> result = (List<Litter>) session.createQuery(HQL)
+				.getResultList();
+		return  result;
+	}
+
+	@Override
+	public List<Litter> findArchivedLitters() {
+		String HQL = "From Litter WHERE status = 'Arkiverad'";
+		
+		@SuppressWarnings("unchecked")
+		List<Litter> result = (List<Litter>) session.createQuery(HQL)
+				.getResultList();
+		return  result;
+	}
+
 
 
 }

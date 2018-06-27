@@ -12,4 +12,7 @@ public interface iLitterDao {
 	public Litter findById(int id);
 	public List<Litter> findAll();
 	public void saveLog(Log log);
+	public List<Litter> findActiveLitters();
+	public List<Litter> findEarlierLitters();
+	public List<Litter> findArchivedLitters();
 }
