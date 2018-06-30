@@ -26,7 +26,6 @@ public class UserController {
 	
 	@POST
 	public Response Login(User user) {
-		System.out.println(user.getEmail() + " " + user.getPassword());
 		boolean valid = dao.find(user.getEmail(), user.getPassword());
 		System.out.println("valid: " + valid);
 		if (valid) {

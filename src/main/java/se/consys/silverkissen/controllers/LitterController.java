@@ -83,8 +83,8 @@ public class LitterController {
 		}
 	    litter.setKittens(kittens);
 		litter.setReadyAt(litter.getBorn().plus(Period.ofWeeks(WEEKS_TO_GET_READY)));
-		if (litter.getImageUrls() != null) {
-			for (Image i : litter.getImageUrls()) {
+		if (litter.getImages() != null) {
+			for (Image i : litter.getImages()) {
 				imageDao.create(i);
 			}
 		}
@@ -113,7 +113,7 @@ public class LitterController {
 			@DefaultValue("-1") @QueryParam("chipped") int chipped,
 			@DefaultValue("-1") @QueryParam("vaccinated") int vaccinated,
 			@DefaultValue("-1") @QueryParam("pedigree") int pedigree,
-			@DefaultValue("") @QueryParam("displayimage") String displayPicture,
+			@DefaultValue("-1") @QueryParam("images") int displayPicture,
 			@DefaultValue("") @QueryParam("litterstatus") String status) {
 		try {
 			Litter litter = dao.findById(id);
@@ -130,7 +130,7 @@ public class LitterController {
 			if (readyAt != null && !readyAt.getLocalDate().equals(LocalDate.MIN)) litter.setReadyAt(readyAt.getLocalDate());
 			if (numberOfMales != -1) litter.setNumberOfMales(numberOfMales);
 			if (numberOfFemales != -1) litter.setNumberOfFemales(numberOfFemales);
-			if (!displayPicture.equals("")) litter.setDisplayPicture(displayPicture);
+			//if (!displayPicture.equals("")) litter.setDisplayPicture(displayPicture);
 
 			if (chipped != -1) {
 				if (chipped == 0) {
@@ -212,7 +212,7 @@ public class LitterController {
 						Image i = imageDao.findById(imageId);
 						images.add(i);
 					}
-					litter.setImageUrls(images);
+					litter.setImages(images);
 				} catch (NoResultException e) {
 					Log log = new Log(Log.Messages.NORESULT, "Image", "Image ids: " + imageIds);
 					dao.saveLog(log);

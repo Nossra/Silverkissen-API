@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,8 +35,7 @@ public class Litter {
 	private LocalDate readyAt;
 	private LocalDate born;
 	@OneToMany
-	private List<Image> imageUrls;
-	private String displayPicture;
+	private List<Image> images;
 	private String notes;
 	private int numberOfKittens;
 	private int numberOfFemales;
@@ -145,27 +146,19 @@ public class Litter {
 		this.vaccinated = vaccinated;
 	}
 
-	public String getDisplayPicture() {
-		return displayPicture;
-	}
-
-	public void setDisplayPicture(String displayPicture) {
-		this.displayPicture = displayPicture;
-	}
-
-	public List<Image> getImageUrls() {
-		return imageUrls;
-	}
-
-	public void setImageUrls(List<Image> imageUrls) {
-		this.imageUrls = imageUrls;
-	}
-
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}	
 }
