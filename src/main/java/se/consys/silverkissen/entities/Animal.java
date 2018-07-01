@@ -27,8 +27,8 @@ public abstract class Animal {
 	@ManyToMany
 	@JoinTable(
 			name = "images_animals",
-			joinColumns = @JoinColumn(name="image_id", referencedColumnName="id"),
-			inverseJoinColumns = @JoinColumn(name="animal_id", referencedColumnName="id"))
+			joinColumns = @JoinColumn(name="animal_id", referencedColumnName="id"),
+			inverseJoinColumns = @JoinColumn(name="image_id", referencedColumnName="id"))
 	private List<Image> images;
 	
 	public int getId() {
