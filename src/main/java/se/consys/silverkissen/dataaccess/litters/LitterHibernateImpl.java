@@ -19,7 +19,6 @@ public class LitterHibernateImpl implements iLitterDao {
 		session.getTransaction().commit();
 	}
 
-	@Override
 	public void update(Litter litter) {
 		session.beginTransaction();
 		session.merge(litter);
