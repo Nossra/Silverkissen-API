@@ -12,7 +12,7 @@ public class LitterHibernateImpl implements iLitterDao {
 	
 	private Session session = HibernateUtil.getSessionFactory().openSession();
 	
-	@Override
+	
 	public void create(Litter litter) {
 		session.beginTransaction();
 		session.persist(litter);
@@ -25,14 +25,14 @@ public class LitterHibernateImpl implements iLitterDao {
 		session.getTransaction().commit();		
 	}
 
-	@Override
+	
 	public void delete(Litter litter) {
 		session.beginTransaction();
 		session.remove(litter);
 		session.getTransaction().commit();	
 	}
 
-	@Override
+	
 	public Litter findById(int id) {
 		String HQL = "FROM Litter WHERE id = :id";
 		
@@ -44,7 +44,7 @@ public class LitterHibernateImpl implements iLitterDao {
 		return  result;
 	}
 
-	@Override
+	
 	public List<Litter> findAll() {
 		String HQL_FIND_ALL = "FROM Litter";
 		
@@ -61,7 +61,7 @@ public class LitterHibernateImpl implements iLitterDao {
 		session.getTransaction().commit();
 	}
 
-	@Override
+	
 	public List<Litter> findActiveLitters() {
 		String HQL = "From Litter WHERE status = 'Aktiv'";
 		
@@ -71,7 +71,7 @@ public class LitterHibernateImpl implements iLitterDao {
 		return  result;
 	}
 
-	@Override
+	
 	public List<Litter> findEarlierLitters() {
 		String HQL = "From Litter WHERE status = 'Tidigare kull'";
 		
@@ -81,7 +81,7 @@ public class LitterHibernateImpl implements iLitterDao {
 		return  result;
 	}
 
-	@Override
+	
 	public List<Litter> findArchivedLitters() {
 		String HQL = "From Litter WHERE status = 'Arkiverad'";
 		

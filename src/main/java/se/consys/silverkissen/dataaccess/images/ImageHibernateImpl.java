@@ -13,28 +13,28 @@ public class ImageHibernateImpl implements iImageDao {
 
 	private Session session = HibernateUtil.getSessionFactory().openSession();
 	
-	@Override
+	
 	public void create(Image image) {
 		session.beginTransaction();
 		session.persist(image);
 		session.getTransaction().commit();
 	}
 
-	@Override
+	
 	public void update(Image image) {
 		session.beginTransaction();
 		session.merge(image);
 		session.getTransaction().commit();
 	}
 
-	@Override
+	
 	public void delete(Image image) {
 		session.beginTransaction();
 		session.delete(image);
 		session.getTransaction().commit();
 	}
 
-	@Override
+	
 	public List<Image> findAll() {
 		String HQL_FIND_ALL = "FROM Image";
 		
@@ -44,7 +44,7 @@ public class ImageHibernateImpl implements iImageDao {
 		return  result;
 	}
 
-	@Override
+	
 	public Image findById(int id) {
 		String HQL = "FROM Image WHERE id = :id";
 		
@@ -56,7 +56,7 @@ public class ImageHibernateImpl implements iImageDao {
 		return  result;
 	}
 
-	@Override
+	
 	public void saveLog(Log log) {
 		session.beginTransaction();
 		session.persist(log);

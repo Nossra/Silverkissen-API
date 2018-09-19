@@ -15,7 +15,7 @@ public class UserHibernateImpl implements iUserDao {
 
 	private Session session = HibernateUtil.getSessionFactory().openSession();
 	
-	@Override
+	
 	public boolean find(String email, String password) {
 		try {
 			String HQL = "From User WHERE email=:email AND password=:password";
@@ -32,7 +32,7 @@ public class UserHibernateImpl implements iUserDao {
 		}
 	}
 
-	@Override
+	
 	public void saveLog(Log log) {
 		session.beginTransaction();
 		session.persist(log);

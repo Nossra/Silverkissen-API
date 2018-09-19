@@ -13,28 +13,25 @@ public class CatHibernateImpl implements iCatDao {
 	
 	private Session session = HibernateUtil.getSessionFactory().openSession();
 	
-	@Override
+
 	public void create(Cat cat) {
 		session.beginTransaction();
 		session.persist(cat);
 		session.getTransaction().commit();
 	}
 
-	@Override
 	public void update(Cat cat) {
 		session.beginTransaction();
 		session.merge(cat);
 		session.getTransaction().commit();
 	}
 
-	@Override
 	public void delete(Cat cat) {
 		session.beginTransaction();
 		session.delete(cat);
 		session.getTransaction().commit();
 	}
 
-	@Override
 	public Cat findById(int id) {
 		//might have to be "Animal" instead of "Cat"
 		String HQL = "FROM Animal WHERE id = :id";
@@ -47,7 +44,6 @@ public class CatHibernateImpl implements iCatDao {
 		return  result;
 	}
 
-	@Override
 	public List<Cat> findAll() {
 		String HQL_FIND_ALL = "FROM Cat";
 		
@@ -57,7 +53,6 @@ public class CatHibernateImpl implements iCatDao {
 		return  result;
 	}
 	
-	@Override
 	public void saveLog(Log log) {
 		// TODO Auto-generated method stub
 		session.beginTransaction();
