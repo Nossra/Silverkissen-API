@@ -2,4 +2,6 @@
 Api for kittens
 
 # To run silverkissen.war
-java -cp target\classes;target\dependency\* se.consys.silverkissen.heroku.Main
+java -cp target\classes;target\dependency\* se.consys.silverkissen.heroku.Main //old
+
+The API is running on a VPS with a service, start/stop silverkissen-api
